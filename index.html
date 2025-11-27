@@ -60,6 +60,22 @@
             margin-bottom: 0.5rem;
             display: block;
         }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="text-white min-h-screen flex flex-col">
@@ -70,6 +86,7 @@
         <div class="space-x-4 hidden md:block">
             <a href="#home" class="hover:text-pink-200 transition">Home</a>
             <a href="#reasons" class="hover:text-pink-200 transition">Why You?</a>
+            <a href="#magic-zone" class="hover:text-pink-200 transition">Magic Zone</a>
             <a href="#game" class="bg-white text-purple-600 px-4 py-2 rounded-full font-bold hover:bg-pink-100 transition shadow-lg">Play Game</a>
         </div>
     </nav>
@@ -81,7 +98,7 @@
                 ✨ The Best Sister Award Goes To...
             </div>
             <h1 class="text-6xl md:text-8xl font-bold leading-tight drop-shadow-lg">
-                To My Favorite <br/> <span class="text-pink-200">Sister Parvana!</span>
+                To My Favorite <br/> <span class="text-pink-200">Sister!</span>
             </h1>
             <p class="text-lg md:text-xl text-white/90 max-w-lg mx-auto md:mx-0">
                 To the coolest, smartest, and most annoying (just kidding!) sister in the world. Here is a little corner of the internet just for you.
@@ -136,14 +153,57 @@
         </div>
     </section>
 
+    <!-- NEW GEMINI AI SECTION -->
+    <section id="magic-zone" class="container mx-auto px-6 py-20">
+        <div class="text-center mb-12">
+            <h2 class="text-5xl font-bold mb-4">✨ The Magic Zone ✨</h2>
+            <p class="text-white/80">Powered by AI magic, just for you!</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            
+            <!-- Feature 1: Compliment Generator -->
+            <div class="glass-card p-8 flex flex-col items-center text-center">
+                <div class="text-5xl mb-4">🪄</div>
+                <h3 class="text-2xl font-bold mb-4">Instant Cheer-Up</h3>
+                <p class="mb-6 text-white/80">Feeling bored? Click the button to receive a personalized message from the Magic Mirror.</p>
+                <div id="compliment-box" class="min-h-[80px] w-full bg-white/10 rounded-lg p-4 mb-4 flex items-center justify-center italic text-lg">
+                    "Your magic message will appear here..."
+                </div>
+                <button onclick="generateCompliment()" id="compliment-btn" class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105">
+                    Reveal Magic Message ✨
+                </button>
+            </div>
+
+            <!-- Feature 2: Hero Story Generator -->
+            <div class="glass-card p-8 flex flex-col items-center text-center">
+                <div class="text-5xl mb-4">📖</div>
+                <h3 class="text-2xl font-bold mb-4">Story Weaver</h3>
+                <p class="mb-4 text-white/80">Type a topic (e.g., "unicorns", "homework", "ice cream") and see yourself become the hero!</p>
+                
+                <input type="text" id="story-topic" placeholder="Enter a topic here..." class="w-full p-3 rounded-full bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:bg-white/30 mb-4 text-center">
+                
+                <button onclick="generateStory()" id="story-btn" class="bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 mb-4">
+                    Write My Story ✨
+                </button>
+
+                <div id="story-box" class="w-full bg-white/10 rounded-lg p-4 min-h-[100px] text-left text-sm max-h-60 overflow-y-auto hidden">
+                    <!-- Story appears here -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- The Game Section -->
     <section id="game" class="container mx-auto px-6 py-20 bg-black/10 rounded-3xl backdrop-blur-sm mb-20">
         <div class="flex flex-col items-center">
             <h2 class="text-4xl font-bold mb-2 text-center">🌟 Catch The Stars! 🌟</h2>
             <p class="mb-6 text-center text-pink-200">Help the kitty bucket catch the falling stars to increase your happiness level!</p>
             
-            <div class="relative group">
-                <canvas id="gameCanvas" width="350" height="500"></canvas>
+            <div class="relative group w-full max-w-[350px]">
+                <!-- Added inline style for responsive aspect ratio maintenance -->
+                <canvas id="gameCanvas" width="350" height="500" class="w-full h-auto block mx-auto"></canvas>
                 
                 <!-- Overlay for Start -->
                 <div id="startScreen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 rounded-xl z-20">
@@ -164,13 +224,14 @@
             </div>
 
             <!-- Controls Info -->
-            <div class="mt-4 flex gap-4">
-                <button id="btnLeft" class="md:hidden bg-white/20 p-4 rounded-full active:bg-white/40">⬅️</button>
-                <div class="hidden md:block text-sm bg-white/10 px-4 py-2 rounded-lg">
+            <div class="mt-6 flex justify-between w-full max-w-[350px] md:justify-center md:gap-4">
+                <button id="btnLeft" class="md:hidden bg-white/20 hover:bg-white/30 text-4xl p-6 rounded-full active:bg-white/40 transition select-none backdrop-blur-sm shadow-lg" style="touch-action: manipulation;">⬅️</button>
+                <div class="hidden md:block text-sm bg-white/10 px-4 py-2 rounded-lg self-center">
                     Use ⬅️ and ➡️ arrow keys to move
                 </div>
-                <button id="btnRight" class="md:hidden bg-white/20 p-4 rounded-full active:bg-white/40">➡️</button>
+                <button id="btnRight" class="md:hidden bg-white/20 hover:bg-white/30 text-4xl p-6 rounded-full active:bg-white/40 transition select-none backdrop-blur-sm shadow-lg" style="touch-action: manipulation;">➡️</button>
             </div>
+            <p class="md:hidden text-sm text-pink-200 mt-4 opacity-80">(You can also tap the left or right side of the game box!)</p>
             
             <div class="mt-6 text-2xl font-bold">
                 Score: <span id="scoreDisplay">0</span>
@@ -197,6 +258,87 @@
     </footer>
 
     <script>
+        // --- Gemini API Logic ---
+        const apiKey = ""; // System provides this
+
+        async function callGemini(prompt) {
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: prompt }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (error) {
+                console.error("Gemini Error:", error);
+                return "Oops! The magic crystals are cloudy right now. Try again later! ✨";
+            }
+        }
+
+        async function generateCompliment() {
+            const btn = document.getElementById('compliment-btn');
+            const box = document.getElementById('compliment-box');
+            
+            // Loading State
+            const originalText = btn.innerText;
+            btn.innerHTML = '<span class="loader"></span>';
+            btn.disabled = true;
+            
+            const prompt = "Give me a unique, funny, cute, or heartwarming compliment for a 13-year-old sister. It should sound like it is coming from a cool, supportive big brother. Keep it short (under 2 sentences) and cheerful. Do not use quotes.";
+            
+            const text = await callGemini(prompt);
+            
+            // Typewriter effect logic could go here, but simple fade is good for now
+            box.style.opacity = 0;
+            setTimeout(() => {
+                box.innerText = text;
+                box.style.opacity = 1;
+            }, 300);
+            box.style.transition = "opacity 0.5s ease";
+
+            // Reset Button
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+
+        async function generateStory() {
+            const topicInput = document.getElementById('story-topic');
+            const btn = document.getElementById('story-btn');
+            const box = document.getElementById('story-box');
+            
+            const topic = topicInput.value.trim() || "a magical adventure";
+
+            // Loading State
+            const originalText = btn.innerText;
+            btn.innerHTML = '<span class="loader"></span> weaving magic...';
+            btn.disabled = true;
+            box.classList.remove('hidden');
+            box.innerText = "Consulting the story elves...";
+            
+            const prompt = `Write a very short (max 60 words), funny, and empowering mini-story where a 13-year-old girl is the main hero. The theme of the story is: ${topic}. Make her sound awesome.`;
+            
+            const text = await callGemini(prompt);
+            
+            box.innerText = text;
+
+            // Reset Button
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+
+
         // --- Game Logic ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -232,19 +374,70 @@
         document.addEventListener('keydown', keyDownHandler);
         document.addEventListener('keyup', keyUpHandler);
 
-        // Mobile Controls
+        // Mobile Controls - Buttons
         const btnLeft = document.getElementById('btnLeft');
         const btnRight = document.getElementById('btnRight');
 
-        btnLeft.addEventListener('touchstart', (e) => { e.preventDefault(); leftPressed = true; });
-        btnLeft.addEventListener('touchend', (e) => { e.preventDefault(); leftPressed = false; });
+        // Helper to add touch events safely
+        function addTouchControl(elem, direction) {
+             elem.addEventListener('touchstart', (e) => { 
+                e.preventDefault(); 
+                if(direction === 'left') leftPressed = true;
+                else rightPressed = true;
+            }, {passive: false});
+            
+            elem.addEventListener('touchend', (e) => { 
+                e.preventDefault(); 
+                if(direction === 'left') leftPressed = false;
+                else rightPressed = false;
+            }, {passive: false});
+        }
+
+        addTouchControl(btnLeft, 'left');
+        addTouchControl(btnRight, 'right');
+
+        // Also allow mouse interaction for testing
         btnLeft.addEventListener('mousedown', () => { leftPressed = true; });
         btnLeft.addEventListener('mouseup', () => { leftPressed = false; });
-
-        btnRight.addEventListener('touchstart', (e) => { e.preventDefault(); rightPressed = true; });
-        btnRight.addEventListener('touchend', (e) => { e.preventDefault(); rightPressed = false; });
         btnRight.addEventListener('mousedown', () => { rightPressed = true; });
         btnRight.addEventListener('mouseup', () => { rightPressed = false; });
+
+
+        // Canvas Direct Touch Zones (Split Screen Control)
+        // Uses visual bounding box to ensure accuracy even when canvas is resized by CSS
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleTouch(e.touches);
+        }, {passive: false});
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Prevent scrolling while dragging
+            handleTouch(e.touches);
+        }, {passive: false});
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            handleTouch(e.touches); 
+        }, {passive: false});
+
+        function handleTouch(touches) {
+            // Reset first
+            leftPressed = false;
+            rightPressed = false;
+            
+            const rect = canvas.getBoundingClientRect();
+            
+            // Loop through all active touches
+            for (let i = 0; i < touches.length; i++) {
+                const touchX = touches[i].clientX - rect.left;
+                // Use rect.width (visual width) instead of canvas.width (internal resolution)
+                if (touchX < rect.width / 2) {
+                    leftPressed = true;
+                } else {
+                    rightPressed = true;
+                }
+            }
+        }
 
 
         function keyDownHandler(e) {
